@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@2.1.2
+  docker: circleci/docker@2.4.0
 jobs:
   build-and-test:
     description: Setup laravel application and run tests
@@ -55,9 +55,9 @@ jobs:
       - run:
           name: "Build and push Docker image"
           command: |
-            docker build -t laravelapidemo.azurecr.io/laravelapidemo:latest .
-            docker login -u $DOCKER_USER -p $DOCKER_PASS laravelapidemo.azurecr.io
-            docker push laravelapidemo.azurecr.io/laravelapidemo:latest
+            docker build -t laravelapidocker.azurecr.io/laravelapidocker:latest .
+            echo $DOCKER_PASS | docker login laravelapidocker.azurecr.io -u $DOCKER_USER --password-stdin
+            docker push laravelapidocker.azurecr.io/laravelapidocker:latest
 
 workflows:
   test-and-deploy:
