@@ -1,12 +1,12 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@2.4.0
+  docker: circleci/docker@4.0.1
 jobs:
   build-and-test:
     description: Setup laravel application and run tests
     docker:
       # Specify the version you desire here
-      - image: cimg/php:8.0-browsers
+      - image: cimg/php:8.5
 
     steps:
       - checkout
@@ -45,19 +45,17 @@ jobs:
   build-docker-image:
     executor:
       name: docker/docker
-      tag: "3.6"
+      tag: "3.13"
     steps:
       - checkout
-      - docker/install-docker-tools
       - setup_remote_docker:
-          version: 20.10.14
           docker_layer_caching: true
       - run:
           name: "Build and push Docker image"
           command: |
-            docker build -t laravelapidocker.azurecr.io/laravelapidocker:latest .
-            echo $DOCKER_PASS | docker login laravelapidocker.azurecr.io -u $DOCKER_USER --password-stdin
-            docker push laravelapidocker.azurecr.io/laravelapidocker:latest
+            docker build -t $REGISTRY/laravelapidocker:latest .
+            echo $DOCKER_PASS | docker login $REGISTRY -u $DOCKER_USER --password-stdin
+            docker push $REGISTRY/laravelapidocker:latest
 
 workflows:
   test-and-deploy:

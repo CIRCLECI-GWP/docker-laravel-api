@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use InvalidArgumentException;
+use Random\Randomizer;
 
 class ExchangeRateHelper
 {
@@ -23,7 +24,7 @@ class ExchangeRateHelper
         $rates = [];
 
         foreach ($currencies as $currency) {
-            $rates[$currency] = round(lcg_value(), 2);
+            $rates[$currency] = round((new Randomizer())->getFloat(0, 1), 2);
         }
 
         return $rates;

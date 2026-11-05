@@ -3,18 +3,8 @@
 use App\Helpers\ExchangeRateHelper;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+// The rates endpoint is stateless JSON, so it skips the session and cookie
+// middleware. The container then runs without an APP_KEY or a database.
 Route::get('/', function () {
-
     return response(ExchangeRateHelper::getAllRates());
-});
+})->withoutMiddleware('web');
