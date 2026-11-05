@@ -4,14 +4,13 @@ namespace Tests\Unit;
 
 use App\Helpers\ExchangeRateHelper;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ExchangeRateHelperTest extends TestCase
 {
-    /**
-     * @dataProvider supportedExchangeRates
-     */
-    public function test_that_supported_rates_are_returned($currency)
+    #[DataProvider('supportedExchangeRates')]
+    public function test_that_supported_rates_are_returned(string $currency): void
     {
         $returnedRates = ExchangeRateHelper::getRatesForCurrency($currency);
         $expectedLength = count(ExchangeRateHelper::getSupportedCurrencies()) - 1;
@@ -20,7 +19,7 @@ class ExchangeRateHelperTest extends TestCase
         $this->assertEquals($expectedLength, $actualLength, "$expectedLength rates should be returned but $actualLength rates were returned.");
     }
 
-    public function supportedExchangeRates(): array
+    public static function supportedExchangeRates(): array
     {
         return [["EUR"], ["GBP"], ["NGN"], ["USD"]];
     }
